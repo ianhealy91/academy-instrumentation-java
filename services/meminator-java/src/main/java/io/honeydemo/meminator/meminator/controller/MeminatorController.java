@@ -20,6 +20,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+// Import the attribute below to add a custom span using WithSpan
+// import io.opentelemetry.instrumentation.annotations.WithSpan;
+// Import GlobalOpenTelemetry, Tracer, and Span
+// import io.opentelemetry.api.GlobalOpenTelemetry;
+// import io.opentelemetry.api.trace.Span;
+// import io.opentelemetry.api.trace.Tracer;
+// Import attributes class
+// import io.opentelemetry.api.common.Attributes;
 
 @RestController
 public class MeminatorController {
@@ -28,19 +36,26 @@ public class MeminatorController {
     private static final int IMAGE_MAX_HEIGHT_PX = 1000;
 
     Logger logger = LogManager.getLogger("MeminatorController");
+    // get a Tracer to create a new span
+    // Tracer tracer = GlobalOpenTelemetry.getTracer("meminator-tracer");
 
     @SuppressWarnings("deprecation")
     @PostMapping("/applyPhraseToPicture")
     public ResponseEntity<byte[]> meminate(@RequestBody ImageRequest request) {
         File inputFile = null;
         File outputFile = null;
-
+        // call tracer.spanBuilder and pass in the span name, call setNoParent, call startSpan
+        // Span span = tracer.spanBuilder("apply phrase").setNoParent().startSpan();
+        // Get the span
+        // Span span=Span.current();
         try {
             String phrase = request.getPhrase();
             URL imageUrl = new URL(request.getImageUrl());
             
             String filename = new File(imageUrl.getPath()).getName();
             String fileExtension = getFileExtension(filename);
+            // Add span attribute to newly created span
+            // span.setAttribute("app.file_extension", fileExtension);
             // download the image using URL
             BufferedImage originalImage = ImageIO.read(imageUrl);
             inputFile = new File("/tmp/" + filename);
@@ -50,8 +65,18 @@ public class MeminatorController {
             String outputFilePath = getOutputFilePath(fileExtension);
             outputFile = new File(outputFilePath);
 
+
             // run the convert command
+            // Call addEvent to the runConvertCommand function, pass in a name, then set attributes
+            // span.addEvent("Running convert command", Attributes.builder()
+            // .put("app.imageFile", "filename")
+            // .put("app.phrase", phrase)
+            // .put("app.outputFile", outputFilePath)
+            // .build());
             runConvertCommand(inputFile, phrase, outputFilePath);
+            // Break the function to see the span event work
+            // runConvertCommand(new File("this does not exist"), phrase, outputFilePath);
+
 
             // read the output file back into the byte array
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -73,6 +98,8 @@ public class MeminatorController {
         } finally {
             if(inputFile != null) try { inputFile.delete(); } catch (Exception ide) { ide.printStackTrace(); }
             if(outputFile != null) try { outputFile.delete(); } catch (Exception ode) { ode.printStackTrace(); }
+        // End the span
+        // span.end();
         }
     }
 
@@ -125,6 +152,8 @@ public class MeminatorController {
         }
     }
 
+// Add custom span using WithSpan
+    // @WithSpan
     private int runConvertCommand(File inputFile, String phrase, String outputFilePath) throws InterruptedException, IOException {
 
           //  Span subprocessSpan = GlobalOpenTelemetry.getTracer("pictureController").spanBuilder("convert").startSpan();

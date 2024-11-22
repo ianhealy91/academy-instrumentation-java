@@ -17,7 +17,7 @@ WORKDIR /app
 COPY --from=build /app/target/backend-for-frontend-0.0.1-SNAPSHOT.jar ./backend-for-frontend.jar
 COPY --from=dependencies /app/opentelemetry-javaagent.jar .
 EXPOSE 10115
-
+# Comment the line below, it does not contain the Java agent
 CMD ["java", "-jar", "backend-for-frontend.jar"]
-# uncomment for enabling otel auto-instrumentation
+# Uncomment line below to enable OTel automatic instrumentation, it contains the Java agent
 # CMD ["java", "-javaagent:./opentelemetry-javaagent.jar", "-jar", "backend-for-frontend.jar"]

@@ -14,6 +14,10 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import reactor.core.publisher.Mono;
+// Add the import statement below to import class from OTel API
+// import io.opentelemetry.api.trace.Span;
+// Add the import statement to import status code class from OTel API
+// import io.opentelemetry.api.trace.StatusCode;
 
 @RestController
 public class PictureController {
@@ -45,6 +49,16 @@ public class PictureController {
         var meme = bothResults.flatMap(v -> {
             String phrase = v.getT1().getBody().getPhrase();
             String imageUrl = v.getT2().getBody().getImageUrl();
+            // Add span attributes to the createPicture span
+            // Span currentSpan = Span.current();
+            // currentSpan.setAttribute("app.phrase", phrase);
+            // Add the following IF statement to set span status 
+            // if (phrase.length() > 10) {
+            //      currentSpan.setStatus(StatusCode.ERROR);
+            //  } else {
+            //      currentSpan.setStatus(StatusCode.OK);
+            //  }
+            // currentSpan.setAttribute("app.imageUrl", imageUrl);
             logger.info("app.phrase=" + phrase + ", app.imageUrl=" + imageUrl);
 
             return memeClient.post().uri("/applyPhraseToPicture").bodyValue(new MemeRequest(phrase, imageUrl))
