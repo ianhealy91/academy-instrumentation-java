@@ -3,7 +3,7 @@
 
 ***This is a demo app, don't run it in production!***
 
-This branch is an answer key. All code modifications and additions are commented out, along with short directions. Please refer to the lab activities in Honeycomb Academy for the comprehensive direction set.
+This branch is an answer key. All code modifications and additions are commented out, along with short directions. Seach INSTRUMENTATION to identify instrumentation code. Please refer to the lab activities in Honeycomb Academy for the comprehensive direction set. 
 
 Below are instructions for running the application. This contains a sample application for use in Honeycomb Academy lab activities. This app has 4 services. It generates images by combining a randomly chosen picture with a randomly chosen phrase.
 

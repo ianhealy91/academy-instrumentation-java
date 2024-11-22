@@ -20,13 +20,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-// Import the attribute below to add a custom span using WithSpan
+// INSTRUMENTATION: Import the annotation below to add a custom span using WithSpan
 // import io.opentelemetry.instrumentation.annotations.WithSpan;
-// Import GlobalOpenTelemetry and Tracer and Span classes to create a new (root) span using SpanBuilder
+// INSTRUMENTATION: Import GlobalOpenTelemetry and Tracer and Span classes to create a new (root) span using SpanBuilder
 // import io.opentelemetry.api.GlobalOpenTelemetry;
 // import io.opentelemetry.api.trace.Span;
 // import io.opentelemetry.api.trace.Tracer;
-// Import attributes class
+// INSTRUMENTATION: Import attributes class
 // import io.opentelemetry.api.common.Attributes;
 
 @RestController
@@ -36,7 +36,7 @@ public class MeminatorController {
     private static final int IMAGE_MAX_HEIGHT_PX = 1000;
 
     Logger logger = LogManager.getLogger("MeminatorController");
-    // get a Tracer to create a new (root) span using SpanBuilder
+    // INSTRUMENTATION: Get a Tracer to create a new (root) span using SpanBuilder
     // Tracer tracer = GlobalOpenTelemetry.getTracer("meminator-tracer");
 
     @SuppressWarnings("deprecation")
@@ -44,9 +44,9 @@ public class MeminatorController {
     public ResponseEntity<byte[]> meminate(@RequestBody ImageRequest request) {
         File inputFile = null;
         File outputFile = null;
-        // To create new root span, call tracer.spanBuilder and pass in the span name, call setNoParent, call startSpan
+        // INSTRUMENTATION: To create new root span, call tracer.spanBuilder and pass in the span name, call setNoParent, call startSpan
         // Span span = tracer.spanBuilder("apply phrase").setNoParent().startSpan();
-        // Get the span before you a add span event
+        // INSTRUMENTATION: Get the span before you add span event
         // Span span=Span.current();
         try {
             String phrase = request.getPhrase();
@@ -54,7 +54,7 @@ public class MeminatorController {
             
             String filename = new File(imageUrl.getPath()).getName();
             String fileExtension = getFileExtension(filename);
-            // Add span attribute to newly created root span
+            // INSTRUMENTATION: Add span attribute to newly created root span
             // span.setAttribute("app.file_extension", fileExtension);
             // download the image using URL
             BufferedImage originalImage = ImageIO.read(imageUrl);
@@ -67,14 +67,14 @@ public class MeminatorController {
 
 
             // run the convert command
-            // Call addEvent to the runConvertCommand function, pass in a name, then set attributes
+            // INSTRUMENTATION: Call addEvent to the runConvertCommand function, pass in a name, then set attributes
             // span.addEvent("Running convert command", Attributes.builder()
-            // .put("app.imageFile", "filename") // add attributes
+            // .put("app.imageFile", "filename") // INSTRUMENTATION: Add attributes
             // .put("app.phrase", phrase)
             // .put("app.outputFile", outputFilePath)
-            // .build()); // call build
+            // .build()); // INSTRUMENTATION: Call build
             runConvertCommand(inputFile, phrase, outputFilePath);
-            // Break the function to see the error event work
+            // INSTRUMENTATION: Break the function to see the error event work
             // runConvertCommand(new File("this does not exist"), phrase, outputFilePath);
 
 
@@ -94,14 +94,14 @@ public class MeminatorController {
 
         } catch (Exception e) {
             logger.error(e.getClass() + ": " +  e.getMessage() + ": " + e.getCause(), e);
-            // Add a span event to record an exception and set the span status to ERROR
+            // INSTRUMENTATION: Add a span event to record an exception and set the span status to ERROR
             // span.recordException(e);
             //      span.setStatus (StatusCode.ERROR, e.getMessage());
             return ResponseEntity.status(500).build();
         } finally {
             if(inputFile != null) try { inputFile.delete(); } catch (Exception ide) { ide.printStackTrace(); }
             if(outputFile != null) try { outputFile.delete(); } catch (Exception ode) { ode.printStackTrace(); }
-        // End the new root span
+        // INSTRUMENTATION: End the new root span (created with SpanBuilder)
         // span.end();
         }
     }
@@ -155,7 +155,7 @@ public class MeminatorController {
         }
     }
 
-// Add custom span using WithSpan
+// INSTRUMENTATION: Add custom span to existing trace using WithSpan annotation
     // @WithSpan
     private int runConvertCommand(File inputFile, String phrase, String outputFilePath) throws InterruptedException, IOException {
 

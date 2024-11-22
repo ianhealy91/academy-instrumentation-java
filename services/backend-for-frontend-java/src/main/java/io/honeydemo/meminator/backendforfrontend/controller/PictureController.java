@@ -14,9 +14,9 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import reactor.core.publisher.Mono;
-// Add the import statement below to import class from OTel API
+// INSTRUMENTATION: Add the import statement below to import class from OTel API
 // import io.opentelemetry.api.trace.Span;
-// Add the import statement to import status code class from OTel API
+// INSTRUMENTATION: Add the import statement to import status code class from OTel API
 // import io.opentelemetry.api.trace.StatusCode;
 
 @RestController
@@ -49,10 +49,10 @@ public class PictureController {
         var meme = bothResults.flatMap(v -> {
             String phrase = v.getT1().getBody().getPhrase();
             String imageUrl = v.getT2().getBody().getImageUrl();
-            // Add span attributes to the createPicture span
-            // Span currentSpan = Span.current(); // This call gets the span
-            // currentSpan.setAttribute("app.phrase", phrase);
-            // Add the following IF statement to set span status 
+            // INSTRUMENTATION: Add span attributes to the createPicture span
+            // Span currentSpan = Span.current(); // INSTRUMENTATION: This call gets the span
+            // currentSpan.setAttribute("app.phrase", phrase); // INSTRUMENTATION: This sets attributes on the span
+            // INSTRUMENTATION: Add the following IF statement to set span status 
             // if (phrase.length() > 10) {
             //      currentSpan.setStatus(StatusCode.ERROR);
             //  } else {
