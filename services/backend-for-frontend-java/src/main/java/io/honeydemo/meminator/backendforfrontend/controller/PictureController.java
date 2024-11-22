@@ -50,7 +50,7 @@ public class PictureController {
             String phrase = v.getT1().getBody().getPhrase();
             String imageUrl = v.getT2().getBody().getImageUrl();
             // Add span attributes to the createPicture span
-            // Span currentSpan = Span.current();
+            // Span currentSpan = Span.current(); // This call gets the span
             // currentSpan.setAttribute("app.phrase", phrase);
             // Add the following IF statement to set span status 
             // if (phrase.length() > 10) {
