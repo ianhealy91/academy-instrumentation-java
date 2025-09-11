@@ -1,0 +1,32 @@
+[
+  {
+    "resource": {
+      "attributes": {
+        "service.name": "backend-for-frontend",
+        "service.instance.id": "my-instance-id-1"
+      }
+    },
+    "spans": [
+      {
+        "trace_id": "377e551e3fa21466afaf594e759ca5cb",
+        "span_id": "055829413d2235c3",
+        "parent_id": "83d7d6a23bef51f7",
+        "name": "POST",
+        "timestamp": "2024-12-10T23:27:12.575Z",
+        "duration_ms": 300568.907716,
+        "attributes": {
+          "http.url": "null",
+          "app.phraseResponse": "null"
+        },
+        "events": [
+          {
+            "timestamp": "2024-12-10T23:32:13.143897296Z",
+            "attributes": {
+              "exception.message": "Headers Timeout Error"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
