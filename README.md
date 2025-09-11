@@ -1,7 +1,7 @@
 
 # Honeycomb Academy: Sample Meminator App
 
-***This is a demo app, don't run it in production***
+***This is a demo app, don't run it in production.***
 
 This contains a sample application for use in Honeycomb Academy lab activities. This app has 4 services.
 
@@ -20,7 +20,7 @@ Hello! Welcome to the **Instrumenting with Java** course lab.
 
 ## Running the application
 
-To run this app, you can use GitPod or Codespaces.
+To run this app, you can use Codespaces.
 
 Once you run the application, you can send traces to Honeycomb. Then you can practice improving the instrumentation for better observability.
 
@@ -29,14 +29,6 @@ Once you run the application, you can send traces to Honeycomb. Then you can pra
 Open the repository on GitHub. Open the `<> Code` dropdown down menu.
 
 Select the `Codespaces` tab. Create a codespace on main.
-
-### GitPod setup
-
-Go to [Gitpod](https://gitpod.io/#https://github.com/honeycombio/academy-instrumentation-java) to open the repository.
-
-Confirm the workspace creation. You can work in the browser with VS Code Browser or in your local code editor. The default settings are acceptable. 
-
-Once you are in the code editor, run `docker compose up` in the code editor's terminal. To stop running the application, run `ctrl+c`. Then run `docker compose down` to remove the container.
 
 ### Local development setup
 
@@ -82,8 +74,6 @@ After making changes to a service, you can tell it to rebuild just that one:
 ### Try it out
 
 Visit [http://localhost:10114]()
-
-> If you are using **GitPod**, the address may not be localhost. When running, the VSC environment will ask you if you want to expose the ports to public. Select Yes, and you will see the external address and port 10114, to which you can then click the globe icon to show it on a new tab.
 
 Click the "GO" button. Then wait.
 
