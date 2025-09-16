@@ -48,7 +48,7 @@ public class PictureController {
             String imageUrl = v.getT2().getBody().getImageUrl();
             Span currentSpan = Span.current();
             currentSpan.setAttribute("app.phrase", phrase);
-            currentSpan.setAttribute("app.imageUrl", imageUrl);
+            currentSpan.setAttribute("app.imageUrl", imageUrl); 
             logger.info("app.phrase=" + phrase + ", app.imageUrl=" + imageUrl);
 
             return memeClient.post().uri("/applyPhraseToPicture").bodyValue(new MemeRequest(phrase, imageUrl))
